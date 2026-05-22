@@ -233,6 +233,7 @@ body::before{
 .card-footer{
   display:flex;align-items:flex-end;justify-content:space-between;
   padding:12px 20px 16px;margin-top:auto;
+  border-top:none;
 }
 .card-updated-label{font-size:11px;font-weight:700;color:var(--text-primary);line-height:1.2}
 .card-updated-date{font-size:11px;color:var(--text-secondary);margin-top:2px}
@@ -243,8 +244,8 @@ body::before{
   cursor:pointer;font-family:var(--font);transition:all .15s;white-space:nowrap;
 }
 .card-dl-btn:hover{border-color:var(--border-strong);color:var(--text-primary);background:var(--bg)}
-.card-action-btn{width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:6px;border:1px solid var(--border);background:var(--surface);cursor:pointer;color:var(--text-secondary);font-size:14px;transition:all .15s;flex-shrink:0}
-.card-action-btn:hover{border-color:var(--border-strong);color:var(--text);background:var(--bg)}
+.card-action-btn{width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:6px;border:1px solid transparent;background:transparent;cursor:pointer;color:var(--text-secondary);font-size:14px;transition:all .15s;flex-shrink:0}
+.card-action-btn:hover{border-color:var(--border);color:var(--text);background:var(--bg)}
 .card-action-btn.danger{color:var(--red)}.card-action-btn.danger:hover{background:var(--red-bg);border-color:var(--red-border)}
 /* Misc */
 .status-badge{
@@ -1146,7 +1147,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
       </button>
       <button class="btn-primary" onclick="openModal('modal-new-dp')">
         <svg class="ic" style="font-size:13px"><use href="#ic-plus"/></svg>
-        + Add data point
+        Add data point
       </button>
       <button class="btn-primary" id="btnSavePublish" onclick="saveChanges()" style="display:none">Save &amp; publish</button>
     </div>
@@ -1622,6 +1623,15 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
         <span class="form-error" id="err-nt-name">Please enter a template name</span>
       </div>
 
+      <!-- Brief description -->
+      <div class="form-group">
+        <label class="form-label">Brief description</label>
+        <textarea class="form-input" id="nt-desc" maxlength="160" rows="2"
+          placeholder="e.g. Core financials for credit monitoring: income statement, balance sheet and liquidity ratios."
+          style="resize:none;line-height:1.5"></textarea>
+        <span class="form-hint" style="font-size:11px;color:var(--text-muted);margin-top:3px;display:block">Optional · max 160 chars</span>
+      </div>
+
       <!-- Company -->
       <div class="form-group">
         <label class="form-label">Company <span class="req">*</span></label>
@@ -1996,12 +2006,12 @@ const DATA_TYPE_META = {
 
 /* ── TEMPLATES DATA ─────────────────────────────────────────────── */
 let templates = [
-  {id:1, name:'Template IA Kueski',    company:'Kueski Pay',  type:'kf',   currency:'MXN', periodicity:'monthly',    status:'published', updated:'Apr 23, 2026'},
-  {id:2, name:'Financial Template',    company:'Konfío',      type:'kf',   currency:'MXN', periodicity:'quarterly',  status:'published', updated:'Apr 20, 2026'},
-  {id:3, name:'Covenant Monitor R2',   company:'R2',          type:'cov',  currency:'USD', periodicity:'quarterly',  status:'published', updated:'Apr 18, 2026'},
-  {id:4, name:'Covenant Tracker',      company:'Aplazo',      type:'cov',  currency:'MXN', periodicity:'annual',     status:'draft',     updated:'Apr 15, 2026'},
-  {id:5, name:'Portfolio Overview',    company:'Avante',      type:'port', currency:'MXN', periodicity:'monthly',    status:'published', updated:'Apr 10, 2026'},
-  {id:6, name:'Portfolio Analysis',    company:'Credijusto',  type:'port', currency:'USD', periodicity:'monthly',    status:'draft',     updated:'Apr 8, 2026'},
+  {id:1, name:'Template IA Kueski',    company:'Kueski Pay',  type:'kf',   currency:'MXN', periodicity:'monthly',    status:'published', updated:'Apr 23, 2026', desc:'Simplified financial statement catalog focused on high-level indicators and key metrics.'},
+  {id:2, name:'Financial Template',    company:'Konfío',      type:'kf',   currency:'MXN', periodicity:'quarterly',  status:'published', updated:'Apr 20, 2026', desc:'Core financials for credit monitoring: income statement, balance sheet and liquidity ratios.'},
+  {id:3, name:'Covenant Monitor R2',   company:'R2',          type:'cov',  currency:'USD', periodicity:'quarterly',  status:'published', updated:'Apr 18, 2026', desc:'Tracks financial and operational covenants defined in the credit agreement with R2.'},
+  {id:4, name:'Covenant Tracker',      company:'Aplazo',      type:'cov',  currency:'MXN', periodicity:'annual',     status:'draft',     updated:'Apr 15, 2026', desc:'Annual covenant compliance checklist aligned to the Aplazo facility terms.'},
+  {id:5, name:'Portfolio Overview',    company:'Avante',      type:'port', currency:'MXN', periodicity:'monthly',    status:'published', updated:'Apr 10, 2026', desc:'Monthly portfolio performance summary: originations, collections and delinquency buckets.'},
+  {id:6, name:'Portfolio Analysis',    company:'Credijusto',  type:'port', currency:'USD', periodicity:'monthly',    status:'draft',     updated:'Apr 8, 2026',  desc:'Detailed portfolio breakdown by product, vintage and risk tier for Credijusto.'},
 ];
 
 // editorData: templateId → { sectionName → [{id, name, desc, dataType, active}] }
@@ -2145,7 +2155,7 @@ function renderList() {
     <div class="template-card" onclick="openTemplate(${t.id})">
       <div class="card-body">
         <div class="card-tpl-name">${tplName}</div>
-        <div class="card-tpl-desc">${t.name ? t.company : ''}</div>
+        <div class="card-tpl-desc">${t.desc || ''}</div>
         <div class="card-assigned">
           <div class="card-assigned-bar"></div>
           <span class="card-assigned-text">Assigned to: <strong>${t.company}</strong></span>
@@ -2927,6 +2937,7 @@ function openEditTemplate(id) {
   editingTemplateId = id;
   // Pre-fill form
   document.getElementById('nt-name').value = t.name || '';
+  document.getElementById('nt-desc').value = t.desc || '';
   document.getElementById('nt-company').value = t.company || '';
   document.getElementById('nt-currency').value = t.currency || '';
   document.getElementById('nt-periodicity').value = t.periodicity || '';
@@ -2963,6 +2974,7 @@ function createTemplate() {
     if (t) {
       t.name = name; t.company = company; t.type = type;
       t.currency = currency; t.periodicity = periodicity;
+      t.desc = (document.getElementById('nt-desc').value || '').trim();
       t.updated = 'Today';
     }
     closeModal('modal-new-template');
@@ -2973,9 +2985,10 @@ function createTemplate() {
     return;
   }
 
+  const desc = (document.getElementById('nt-desc').value || '').trim();
   const t = {
     id: ++nextId,
-    name, company, type, currency, periodicity,
+    name, company, type, currency, periodicity, desc,
     status: 'draft',
     updated: 'Today',
   };
@@ -2993,6 +3006,7 @@ function createTemplate() {
 function resetNewTemplateForm() {
   document.getElementById('nt-company').value = '';
   document.getElementById('nt-name').value = '';
+  document.getElementById('nt-desc').value = '';
   document.getElementById('nt-type').value = '';
   document.getElementById('new-type-inline').classList.remove('open');
   document.getElementById('new-type-name').value = '';
