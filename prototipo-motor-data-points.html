@@ -5,6 +5,7 @@
 <title>Data Points — Data Studio · LenderHub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js"></script>
 <style>
 /* ── DS TOKENS ─────────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -306,8 +307,8 @@ body::before{
 .table-wrap{overflow-x:auto;overflow-y:auto;max-height:calc(100vh - 310px)}
 table{width:100%;border-collapse:collapse}
 thead th{
-  padding:10px 14px;text-align:left;font-size:11px;font-weight:600;
-  text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted);
+  padding:10px 14px;text-align:left;font-size:12px;font-weight:600;
+  color:var(--text-secondary);
   border-bottom:1px solid var(--border);background:var(--bg);
   white-space:nowrap;position:sticky;top:0;z-index:5;
 }
@@ -481,6 +482,8 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
 .form-textarea{min-height:72px;resize:vertical;line-height:1.5}
 .form-input::placeholder,.form-textarea::placeholder{color:var(--text-muted)}
 .form-select.is-empty{color:var(--text-muted)}
+.form-select option[value="__new_sec__"]{font-weight:700;color:#111827}
+.form-select option{color:var(--text-main,#111827)}
 .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:#27272A;box-shadow:0 0 0 3px var(--border)}
 .form-hint{font-size:11px;color:var(--text-muted);line-height:1.5}
 .form-error{font-size:11px;color:var(--red);display:none}
@@ -804,6 +807,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
 .tooltip-box{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;padding:8px 12px;border-radius:var(--r);font-size:.75rem;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;z-index:200;line-height:1.6;font-family:inherit;box-shadow:0 4px 12px rgba(0,0,0,.2)}
 .tooltip-box.multi{white-space:normal;max-width:260px;text-align:left;left:0;transform:none}
 .tooltip-box::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:var(--primary)}
+.tooltip-box.below::after{top:auto;bottom:100%;border-top-color:transparent;border-bottom-color:var(--primary)}
 .tooltip-wrap:hover .tooltip-box{opacity:1}
 .matrix-legend{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 16px;background:var(--bg);border-top:1px solid var(--border);font-size:.75rem;color:var(--text-secondary)}
 .legend-label{font-weight:700;color:var(--text);margin-right:2px}
@@ -1073,7 +1077,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
     <div class="header-actions">
       <button class="btn-outlined" onclick="openDuplicateModal()">
         <svg class="ic" style="font-size:13px"><use href="#ic-copy"/></svg>
-        Duplicate template
+        Duplicate
       </button>
       <button class="btn-primary" onclick="openModal('modal-new-template')">
         <svg class="ic"><use href="#ic-plus"/></svg>
@@ -1147,7 +1151,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
       </button>
       <button class="btn-primary" onclick="openModal('modal-new-dp')">
         <svg class="ic" style="font-size:13px"><use href="#ic-plus"/></svg>
-        Add data point
+        Add Data Points
       </button>
       <button class="btn-primary" id="btnSavePublish" onclick="saveChanges()" style="display:none">Save &amp; publish</button>
     </div>
@@ -1166,7 +1170,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
   <div style="display:flex;justify-content:center;padding:28px 0 8px">
     <button onclick="confirmDeleteTemplate(currentTemplate && currentTemplate.id)" style="display:inline-flex;align-items:center;gap:7px;background:none;border:none;cursor:pointer;color:var(--text-secondary);font-size:.82rem;padding:6px 10px;border-radius:6px;transition:color .15s" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--text-secondary)'">
       <svg class="ic" style="font-size:14px"><use href="#ic-trash"/></svg>
-      Delete template
+      Delete this template
     </button>
   </div>
 </div>
@@ -1639,7 +1643,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
       <div class="form-group">
         <label class="form-label">Company <span class="req">*</span></label>
         <select class="form-select is-empty" id="nt-company" onchange="this.classList.toggle('is-empty',!this.value);validateNewTemplate()">
-          <option value="">Select an option</option>
+          <option value="" hidden>Select an option</option>
           <option>Kueski Pay</option><option>Konfío</option><option>R2</option>
           <option>Aplazo</option><option>Avante</option><option>Credijusto</option>
           <option>Stori</option><option>Fincomún</option><option>Yotepresto</option>
@@ -1652,7 +1656,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
         <label class="form-label">Category <span class="req">*</span></label>
         <div class="type-dropdown-wrap">
           <select class="form-select is-empty" id="nt-type" onchange="this.classList.toggle('is-empty',!this.value);handleTypeChange(this)">
-            <option value="">Select an option</option>
+            <option value="" hidden>Select an option</option>
             <option value="kf">Key Financials</option>
             <option value="cov">Covenants</option>
             <option value="port">Portfolio</option>
@@ -1681,7 +1685,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
       <div class="form-group">
         <label class="form-label">Currency <span class="req">*</span></label>
         <select class="form-select is-empty" id="nt-currency" onchange="this.classList.toggle('is-empty',!this.value);pendingNewCurrency=this.value||null;validateNewTemplate()">
-          <option value="">Select an option</option>
+          <option value="" hidden>Select an option</option>
           <option value="MXN">MXN</option>
           <option value="USD">USD</option>
           <option value="UDI">UDI</option>
@@ -1695,7 +1699,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
       <div class="form-group">
         <label class="form-label">Reporting periodicity <span class="req">*</span></label>
         <select class="form-select is-empty" id="nt-periodicity" onchange="this.classList.toggle('is-empty',!this.value);pendingNewPeriodicity=this.value||null;validateNewTemplate()">
-          <option value="">Select an option</option>
+          <option value="" hidden>Select an option</option>
           <option value="monthly">Monthly</option>
           <option value="quarterly">Quarterly</option>
           <option value="annual">Annual</option>
@@ -1737,8 +1741,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
       </button>
     </div>
     <div class="modal-footer">
-      <button class="btn-cancel-modal" onclick="closeModal('modal-new-dp')">Cancel</button>
-      <button class="btn-modal-primary" id="btn-save-dp" onclick="saveDpRows()" disabled>Add data point</button>
+      <button class="btn-modal-primary" id="btn-save-dp" onclick="saveDpRows()" disabled>Save</button>
     </div>
   </div>
 </div>
@@ -1947,7 +1950,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
       <button class="btn-cancel-modal" onclick="closeModal('modal-duplicate')">Cancel</button>
       <button class="btn-modal-primary" id="btn-run-duplicate" onclick="executeDuplicate()" disabled>
         <svg class="ic" style="font-size:13px;margin-right:2px"><use href="#ic-copy"/></svg>
-        Duplicate template
+        Duplicate
       </button>
     </div>
   </div>
@@ -2106,6 +2109,7 @@ let editingSectionName = null;
 
 // Multi-row dp form state
 let dpRows = []; // [{name,section,dataType,desc}]
+let pendingSections = []; // sections confirmed in current modal session
 
 /* ── VIEW SWITCHING ─────────────────────────────────────────────── */
 function showView(name) {
@@ -2263,7 +2267,7 @@ function renderSectionChips() {
   const sections = getAllSections(currentTemplate.id);
 
   if (sections.length === 0) {
-    nav.innerHTML = `<span style="font-size:12px;color:var(--text-muted);padding:4px 0">No sections yet — add your first data point to create one.</span>`;
+    nav.innerHTML = '';
     return;
   }
 
@@ -2309,7 +2313,7 @@ function renderEditorContent() {
       <div class="editor-empty">
         <div class="editor-empty-icon"><svg class="ic" style="font-size:42px;stroke:var(--text-muted)"><use href="#ic-db"/></svg></div>
         <div class="editor-empty-title">No data points yet</div>
-        <div class="editor-empty-sub">Start configuring this template by adding your first data point. You'll define the section as part of the process.</div>
+        <div class="editor-empty-sub">Start configuring this template by adding your first data point.</div>
         <button class="btn-empty-action" onclick="openModal('modal-new-dp')">
           <svg class="ic" style="font-size:13px"><use href="#ic-plus"/></svg>
           Add first data point
@@ -2337,8 +2341,8 @@ function renderEditorContent() {
         <thead>
           <tr>
             <th class="th-drag"></th>
-            <th>Data Point</th>
-            <th>Description</th>
+            <th>Data point</th>
+            <th><span style="display:inline-flex;align-items:center;gap:4px">Description <span class="tooltip-wrap" style="line-height:1"><i class="ph ph-info" style="font-size:13px;color:var(--text-muted);cursor:default"></i><span class="tooltip-box multi below" style="bottom:auto;top:calc(100% + 6px);left:0;transform:none;width:220px">Variable definition and AI extraction guidance. Anchor, rule and exclusions.</span></span></span></th>
             <th class="th-format">Format</th>
             <th class="th-section">Section</th>
             <th class="th-active">Active</th>
@@ -2661,10 +2665,11 @@ function saveEditSection() {
 /* ══════════════════ MULTI-ROW DP MODAL ══════════ */
 function initDpRows() {
   dpRows = [createDpRow()];
+  pendingSections = [];
 }
 
 function createDpRow() {
-  return {id: Date.now() + Math.random(), name:'', section:'', dataType:'currency', desc:''};
+  return {id: Date.now() + Math.random(), name:'', section:'', dataType:'', desc:''};
 }
 
 function addDpRow() {
@@ -2689,10 +2694,11 @@ function renderDpRows() {
   const container = document.getElementById('dp-form-rows');
   const sections  = getAllSections(currentTemplate ? currentTemplate.id : 0);
 
-  const secOptions = sections.length > 0
-    ? sections.map(s => `<option value="${s}">${s}</option>`).join('')
+  const allSecs = [...sections, ...pendingSections.filter(s => !sections.includes(s))];
+  const secOptions = allSecs.length > 0
+    ? allSecs.map(s => `<option value="${s}">${s}</option>`).join('')
     : '';
-  const newSecOption = `<option value="__new_sec__">＋ Create new section…</option>`;
+  const newSecOption = `<option value="__new_sec__" style="font-weight:700;color:#111827">+ New Section</option>`;
 
   container.innerHTML = dpRows.map((row, i) => `
     <div class="dp-form-row" id="dprow-${row.id}">
@@ -2712,17 +2718,18 @@ function renderDpRows() {
         </div>
         <div class="form-group">
           <label class="form-label">Section</label>
-          <select class="form-select" id="dpsec-${row.id}"
+          <select class="form-select ${row.section ? '' : 'is-empty'}" id="dpsec-${row.id}"
             onchange="handleDpSectionChange(${row.id},this)">
-            <option value="">Select or create…</option>
+            <option value="" hidden>Select an option</option>
             ${secOptions}
             ${newSecOption}
           </select>
         </div>
         <div class="form-group">
           <label class="form-label">Format <span class="req">*</span></label>
-          <select class="form-select" id="dptype-${row.id}"
-            onchange="dpRows.find(r=>r.id==${row.id}).dataType=this.value">
+          <select class="form-select ${row.dataType ? '' : 'is-empty'}" id="dptype-${row.id}"
+            onchange="this.classList.toggle('is-empty',!this.value);dpRows.find(r=>r.id==${row.id}).dataType=this.value;validateDpRows()">
+            <option value="" hidden>Select an option</option>
             ${Object.entries(DATA_TYPE_META).map(([k,v]) =>
               `<option value="${k}" ${row.dataType === k ? 'selected' : ''}>${v.label}</option>`
             ).join('')}
@@ -2731,50 +2738,54 @@ function renderDpRows() {
       </div>
       <!-- New section inline (hidden unless __new_sec__ selected) -->
       <div id="newsec-${row.id}" class="new-type-inline" style="margin-top:-4px;margin-bottom:10px">
-        <div class="new-type-title" style="font-size:11px">✦ New section</div>
-        <div class="form-group" style="margin-bottom:8px">
-          <label class="form-label" style="color:var(--secondary-active)">Name <span class="req">*</span></label>
-          <input class="form-input" id="newsecname-${row.id}" maxlength="60"
-            placeholder="e.g. Balance Sheet, Covenants, Portfolio…"
-            oninput="dpRows.find(r=>r.id==${row.id}).newSectionName=this.value;validateDpRows()">
+        <div class="new-type-title" style="font-size:11px">✦ New Section</div>
+        <div class="new-type-row">
+          <div class="form-group" style="flex:1;gap:4px">
+            <label class="form-label" style="color:var(--secondary-active)">Name <span class="req">*</span></label>
+            <input class="form-input" id="newsecname-${row.id}" maxlength="60"
+              placeholder="e.g. Balance Sheet, Covenants, Portfolio…"
+              oninput="dpRows.find(r=>r.id==${row.id}).newSectionName=this.value;validateDpRows();document.getElementById('newsecconfirm-${row.id}').disabled=!this.value.trim()">
+          </div>
+          <button class="btn-confirm-type" id="newsecconfirm-${row.id}" onclick="confirmNewSection(${row.id})" disabled>Confirm</button>
         </div>
-        <div class="form-group" style="margin-bottom:0">
-          <label class="form-label" style="color:var(--secondary-active);display:flex;align-items:center;gap:5px">
-            Section description
-            <span class="tooltip-wrap" style="line-height:1">
-              <svg class="ic" style="font-size:13px;color:var(--secondary-active);cursor:default"><use href="#ic-info"/></svg>
-              <span class="tooltip-box multi">Describe cómo identificar esta sección en el documento del originador (nombre alternativo, ubicación, si es acumulado, etc.). La IA usará esto para extraer los datos correctos.</span>
-            </span>
-          </label>
+        <div class="form-group" style="margin-bottom:0;margin-top:8px">
+          <label class="form-label" style="color:var(--secondary-active)">Description</label>
           <textarea class="form-textarea" id="newsecdesc-${row.id}" maxlength="500"
-            placeholder="e.g. Identify the 'Estado de Resultados' or 'Pérdidas y Ganancias'. Describe how it appears in the document and any relevant extraction rules."
+            placeholder="Define what this section groups together. If applicable, note where it appears in the document — e.g., heading name, tab, or page range."
             oninput="dpRows.find(r=>r.id==${row.id}).newSectionDesc=this.value"
             style="min-height:64px"></textarea>
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label" style="display:flex;align-items:center;gap:5px">Description <span style="font-weight:400;color:var(--text-muted)">(AI extraction instruction)</span>
-          <span class="tooltip-wrap" style="line-height:1">
-            <svg class="ic" style="font-size:13px;color:var(--text-muted);cursor:default"><use href="#ic-info"/></svg>
-            <span class="tooltip-box multi">Describe the account definition + its location in the document (if it is found under another name or in a specific section) + the rules (how it is calculated, exceptions or omissions)</span>
-          </span>
-        </label>
+        <label class="form-label">Description</label>
         <textarea class="form-textarea" id="dpdesc-${row.id}" maxlength="500"
-          placeholder="Describe where to find this value, how to calculate it, and what to exclude."
+          placeholder="Define what this value represents, how it's calculated, and any exclusions or special rules. If applicable, note where it appears in reports or documents."
           oninput="dpRows.find(r=>r.id==${row.id}).desc=this.value">${row.desc}</textarea>
       </div>
     </div>`).join('');
 
-  // Restore section values (select)
+  // Restore section values (select) + sync is-empty state
   dpRows.forEach(row => {
     const sel = document.getElementById(`dpsec-${row.id}`);
-    if (sel && row.section) sel.value = row.section;
+    if (sel) { if (row.section) sel.value = row.section; sel.classList.toggle('is-empty', !sel.value); }
   });
+}
+
+function confirmNewSection(rowId) {
+  const row = dpRows.find(r => r.id === rowId);
+  if (!row) return;
+  const name = (row.newSectionName || '').trim();
+  if (!name) return;
+  if (!pendingSections.includes(name)) pendingSections.push(name);
+  row.section = name;
+  renderDpRows();
+  validateDpRows();
 }
 
 function handleDpSectionChange(rowId, sel) {
   const row = dpRows.find(r => r.id === rowId);
   if (!row) return;
+  sel.classList.toggle('is-empty', !sel.value);
   const nsEl = document.getElementById(`newsec-${rowId}`);
   if (sel.value === '__new_sec__') {
     row.section = '__new_sec__';
@@ -2796,7 +2807,7 @@ function validateDpRows() {
   });
   const btn = document.getElementById('btn-save-dp');
   btn.disabled = !valid;
-  btn.textContent = dpRows.length === 1 ? 'Add data point' : `Add ${dpRows.length} data points`;
+  btn.textContent = 'Save';
 }
 
 function saveDpRows() {
