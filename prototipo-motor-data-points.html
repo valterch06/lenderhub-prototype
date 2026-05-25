@@ -1077,7 +1077,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
       </button>
       <button class="btn-primary" onclick="openModal('modal-new-template')">
         <svg class="ic"><use href="#ic-plus"/></svg>
-        New template
+        Add Template
       </button>
     </div>
   </div>
@@ -1607,7 +1607,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
   <div class="modal">
     <div class="modal-header">
       <div>
-        <div class="modal-title">New Template</div>
+        <div class="modal-title">Add Template</div>
         <div class="modal-subtitle">Create a data point template for a company</div>
       </div>
       <button class="modal-close" onclick="closeModal('modal-new-template')"><svg class="ic"><use href="#ic-close"/></svg></button>
@@ -1618,7 +1618,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
       <div class="form-group">
         <label class="form-label">Template name <span class="req">*</span></label>
         <input class="form-input" id="nt-name" maxlength="60"
-          placeholder="Template name"
+          placeholder="e.g. Financial Template, Covenant Monitor…"
           oninput="validateNewTemplate()">
         <span class="form-error" id="err-nt-name">Please enter a template name</span>
       </div>
@@ -1657,15 +1657,15 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
             <option value="cov">Covenants</option>
             <option value="port">Portfolio</option>
             <!-- custom types injected here by JS -->
-            <option value="__new__" style="color:var(--secondary);font-weight:600">＋ Create new template type…</option>
+            <option value="__new__" style="color:#111827;font-weight:700">+ New Category</option>
           </select>
           <!-- Inline new type creator -->
           <div class="new-type-inline" id="new-type-inline">
-            <div class="new-type-title">✦ New template type</div>
+            <div class="new-type-title">✦ New category</div>
             <p class="form-hint">This name will appear as the category pill on all cards of this type.</p>
             <div class="new-type-row">
               <div class="form-group" style="flex:1;gap:4px">
-                <label class="form-label" style="color:var(--secondary-active)">Type name <span class="req">*</span></label>
+                <label class="form-label" style="color:var(--secondary-active)">Category name <span class="req">*</span></label>
                 <input class="form-input" id="new-type-name" maxlength="40"
                   placeholder="e.g. Covenants, Portfolio, ESG Report…"
                   oninput="document.getElementById('btn-confirm-type').disabled=!this.value.trim()">
@@ -1704,16 +1704,15 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
         <span class="form-error" id="err-nt-periodicity">Please select a periodicity</span>
       </div>
 
-      <!-- Callout -->
-      <div class="callout-info">
+      <!-- Callout — solo visible en modo creación -->
+      <div class="callout-info" id="callout-new-template">
         <i class="ph ph-info ci-icon" style="font-size:15px;flex-shrink:0;margin-top:1px;color:#0369A1"></i>
         <span class="ci-text">The template will be created in <strong>Draft</strong> state. Once inside, add your sections and data points, configure extraction instructions, and publish when ready.</span>
       </div>
 
     </div>
     <div class="modal-footer">
-      <button class="btn-cancel-modal" onclick="closeModal('modal-new-template')">Cancel</button>
-      <button class="btn-modal-primary" id="btn-create-template" onclick="createTemplate()" disabled>Create template</button>
+      <button class="btn-modal-primary" id="btn-create-template" onclick="createTemplate()" disabled>Save</button>
     </div>
   </div>
 </div>
@@ -2966,8 +2965,9 @@ function openEditTemplate(id) {
   // Update modal chrome for edit mode
   document.querySelector('#modal-new-template .modal-title').textContent    = 'Edit Template';
   document.querySelector('#modal-new-template .modal-subtitle').textContent = 'Update the details for this template';
-  document.getElementById('btn-create-template').textContent = 'Save changes';
+  document.getElementById('btn-create-template').textContent = 'Save';
   document.getElementById('btn-create-template').disabled = false;
+  document.getElementById('callout-new-template').style.display = 'none';
   openModal('modal-new-template');
 }
 
@@ -3032,9 +3032,10 @@ function resetNewTemplateForm() {
   newTypeInlineOpen = false;
   document.getElementById('btn-create-template').disabled = true;
   editingTemplateId = null;
-  document.querySelector('#modal-new-template .modal-title').textContent    = 'New Template';
+  document.querySelector('#modal-new-template .modal-title').textContent    = 'Add Template';
   document.querySelector('#modal-new-template .modal-subtitle').textContent = 'Create a data point template for a company';
-  document.getElementById('btn-create-template').textContent = 'Create template';
+  document.getElementById('btn-create-template').textContent = 'Save';
+  document.getElementById('callout-new-template').style.display = '';
 }
 
 /* ══════════════════ DRAG & DROP ═════════════════ */
