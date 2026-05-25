@@ -480,6 +480,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
 }
 .form-textarea{min-height:72px;resize:vertical;line-height:1.5}
 .form-input::placeholder,.form-textarea::placeholder{color:var(--text-muted)}
+.form-select.is-empty{color:var(--text-muted)}
 .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:#27272A;box-shadow:0 0 0 3px var(--border)}
 .form-hint{font-size:11px;color:var(--text-muted);line-height:1.5}
 .form-error{font-size:11px;color:var(--red);display:none}
@@ -1617,7 +1618,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
       <div class="form-group">
         <label class="form-label">Template name <span class="req">*</span></label>
         <input class="form-input" id="nt-name" maxlength="60"
-          placeholder="e.g. Financial Template, Covenant Monitor…"
+          placeholder="Template name"
           oninput="validateNewTemplate()">
         <span class="form-error" id="err-nt-name">Please enter a template name</span>
       </div>
@@ -1625,17 +1626,20 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
       <!-- Brief description -->
       <div class="form-group">
         <label class="form-label">Brief description</label>
-        <textarea class="form-input" id="nt-desc" maxlength="160" rows="2"
-          placeholder="e.g. Core financials for credit monitoring: income statement, balance sheet and liquidity ratios."
-          style="resize:none;line-height:1.5"></textarea>
-        <span class="form-hint" style="font-size:11px;color:var(--text-muted);margin-top:3px;display:block">Optional · max 160 chars</span>
+        <textarea class="form-input" id="nt-desc" maxlength="150" rows="3"
+          placeholder="Brief description of the template"
+          style="resize:none;line-height:1.5"
+          oninput="document.getElementById('nt-desc-count').textContent=this.value.length+'/150'"></textarea>
+        <div style="text-align:right;margin-top:3px">
+          <span id="nt-desc-count" style="font-size:11px;color:var(--text-muted)">0/150</span>
+        </div>
       </div>
 
       <!-- Company -->
       <div class="form-group">
         <label class="form-label">Company <span class="req">*</span></label>
-        <select class="form-select" id="nt-company" onchange="validateNewTemplate()">
-          <option value="">Select a company…</option>
+        <select class="form-select is-empty" id="nt-company" onchange="this.classList.toggle('is-empty',!this.value);validateNewTemplate()">
+          <option value="">Select an option</option>
           <option>Kueski Pay</option><option>Konfío</option><option>R2</option>
           <option>Aplazo</option><option>Avante</option><option>Credijusto</option>
           <option>Stori</option><option>Fincomún</option><option>Yotepresto</option>
@@ -1647,8 +1651,8 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
       <div class="form-group">
         <label class="form-label">Category <span class="req">*</span></label>
         <div class="type-dropdown-wrap">
-          <select class="form-select" id="nt-type" onchange="handleTypeChange(this)">
-            <option value="">Select template type…</option>
+          <select class="form-select is-empty" id="nt-type" onchange="this.classList.toggle('is-empty',!this.value);handleTypeChange(this)">
+            <option value="">Select an option</option>
             <option value="kf">Key Financials</option>
             <option value="cov">Covenants</option>
             <option value="port">Portfolio</option>
@@ -1676,8 +1680,8 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
       <!-- Currency -->
       <div class="form-group">
         <label class="form-label">Currency <span class="req">*</span></label>
-        <select class="form-select" id="nt-currency" onchange="pendingNewCurrency=this.value||null;validateNewTemplate()">
-          <option value="">Select currency…</option>
+        <select class="form-select is-empty" id="nt-currency" onchange="this.classList.toggle('is-empty',!this.value);pendingNewCurrency=this.value||null;validateNewTemplate()">
+          <option value="">Select an option</option>
           <option value="MXN">MXN</option>
           <option value="USD">USD</option>
           <option value="UDI">UDI</option>
@@ -1690,8 +1694,8 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
       <!-- Periodicity -->
       <div class="form-group">
         <label class="form-label">Reporting periodicity <span class="req">*</span></label>
-        <select class="form-select" id="nt-periodicity" onchange="pendingNewPeriodicity=this.value||null;validateNewTemplate()">
-          <option value="">Select periodicity…</option>
+        <select class="form-select is-empty" id="nt-periodicity" onchange="this.classList.toggle('is-empty',!this.value);pendingNewPeriodicity=this.value||null;validateNewTemplate()">
+          <option value="">Select an option</option>
           <option value="monthly">Monthly</option>
           <option value="quarterly">Quarterly</option>
           <option value="annual">Annual</option>
@@ -2951,6 +2955,14 @@ function openEditTemplate(id) {
   }
   pendingNewType = t.type;
   document.getElementById('new-type-inline').classList.remove('open');
+  // Sync is-empty state for selects in edit mode
+  ['nt-company','nt-type','nt-currency','nt-periodicity'].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.toggle('is-empty', !el.value);
+  });
+  const descCount = document.getElementById('nt-desc-count');
+  const descVal = document.getElementById('nt-desc').value;
+  if (descCount) descCount.textContent = descVal.length + '/160';
   // Update modal chrome for edit mode
   document.querySelector('#modal-new-template .modal-title').textContent    = 'Edit Template';
   document.querySelector('#modal-new-template .modal-subtitle').textContent = 'Update the details for this template';
@@ -3011,6 +3023,9 @@ function resetNewTemplateForm() {
   document.getElementById('new-type-name').value = '';
   document.getElementById('nt-currency').value = '';
   document.getElementById('nt-periodicity').value = '';
+  document.getElementById('nt-desc-count').textContent = '0/160';
+  ['nt-company','nt-type','nt-currency','nt-periodicity'].forEach(id =>
+    document.getElementById(id).classList.add('is-empty'));
   pendingNewType = null;
   pendingNewCurrency = null;
   pendingNewPeriodicity = null;
