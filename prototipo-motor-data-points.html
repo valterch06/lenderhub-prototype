@@ -2021,7 +2021,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
     <div class="modal-body">
 
       <!-- ── SOURCE ── -->
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-bottom:2px">Source</div>
+      <div style="font-size:14px;font-weight:700;color:var(--text-main);margin-bottom:8px">Source</div>
 
       <div class="form-group">
         <label class="form-label">Company <span class="req">*</span></label>
@@ -2048,7 +2048,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
       </div>
 
       <!-- ── COPY CONFIG ── -->
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-top:4px;margin-bottom:2px">Copy configuration</div>
+      <div style="font-size:14px;font-weight:700;color:var(--text-main);margin-top:12px;margin-bottom:8px">Copy configuration</div>
 
       <div class="form-group">
         <label class="form-label">New template name <span class="req">*</span></label>
@@ -2066,7 +2066,6 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
           <option>Aplazo</option><option>Avante</option><option>Credijusto</option>
           <option>Stori</option><option>Fincomún</option><option>Yotepresto</option>
         </select>
-        <span class="form-hint">Can be the same company — the data points will be copied exactly.</span>
       </div>
 
     </div>
@@ -3318,9 +3317,7 @@ function onDupTemplateChange(tplId){
   if(!t){validateDuplicate();return;}
   // Pre-fill name
   nameInput.value='Copy of '+t.name;
-  // Pre-fill dest company with same company
-  const destSel=document.getElementById('dup-dest-company');
-  destSel.value=t.company; destSel.classList.toggle('is-empty',!destSel.value);
+  // Leave dest company for user to select
   validateDuplicate();
 }
 
