@@ -671,6 +671,19 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
 .df-badge.awaiting{background:#FEF3C7;color:#D97706;border-color:#FDE68A}
 .df-badge.scheduled{background:#F3F4F6;color:#6B7280;border-color:#D1D5DB}
 .df-badge.check{background:#EFF6FF;color:#2563EB;border-color:#BFDBFE}
+.df-badge.validated{background:#D1FAE5;color:#059669;border-color:#A7F3D0}
+.df-badge.pending{background:#F1F5F9;color:#475569;border-color:#CBD5E1}
+
+/* ── DEMO BAR ──────────────────────────────────────────────────────── */
+.df-demo-bar{position:fixed;bottom:0;left:54px;right:0;height:38px;background:#1c1f2e;
+  display:none;align-items:center;gap:8px;padding:0 20px;z-index:300;font-size:.78rem}
+.df-demo-bar.visible{display:flex}
+.df-demo-label{color:#8b929e;font-weight:600;letter-spacing:.02em;margin-right:4px;display:flex;align-items:center;gap:5px}
+.df-demo-tab{padding:4px 13px;border-radius:5px;border:none;background:transparent;
+  color:#9ca3af;font-family:inherit;font-size:.78rem;cursor:pointer;transition:all .15s}
+.df-demo-tab:hover{background:rgba(255,255,255,.08);color:#fff}
+.df-demo-tab.active{background:var(--secondary);color:#fff;font-weight:600}
+.df-demo-version{margin-left:auto;color:#4b5563;font-size:.71rem}
 .df-req-count{font-size:.65rem;color:var(--text-muted);margin-top:3px}
 .df-action-cell{display:flex;align-items:center;gap:4px}
 .df-btn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:5px;border:none;background:transparent;cursor:pointer;font-size:14px;color:var(--text-secondary);transition:all .12s}
@@ -1270,7 +1283,8 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
 
 <!-- ── VIEW: DATA FLOW ─────────────────────────────────────────── -->
 <div id="view-dataflow">
-  <div class="df-page">
+  <!-- LENDER VIEW -->
+  <div id="df-lender-content" class="df-page" style="padding-bottom:52px">
     <div class="df-head">
       <div>
         <div class="df-title">Data Flow</div>
@@ -1389,8 +1403,124 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
         <button class="df-page-btn">»</button>
       </div>
     </div>
-  </div>
+  </div><!-- /df-lender-content -->
+
+  <!-- ORIGINATOR VIEW -->
+  <div id="df-originator-content" class="df-page" style="display:none;padding-bottom:52px">
+    <div class="df-head">
+      <div>
+        <div class="df-title">Data Flow</div>
+        <div class="df-sub">Review and respond to your data requests.</div>
+      </div>
+    </div>
+    <div class="df-toolbar">
+      <input class="df-search" placeholder="Search by request name">
+      <button class="df-filter-btn"><svg class="ic" style="font-size:13px"><use href="#ic-filter"/></svg> Filters</button>
+    </div>
+    <div class="df-table-wrap">
+      <table class="df-table">
+        <thead>
+          <tr>
+            <th>Requested by</th>
+            <th>Request Name</th>
+            <th>Type</th>
+            <th>Request Date</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th style="width:32px"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="df-company">Saison Capital</span></td>
+            <td>TestGeraPROD</td>
+            <td>Recurring request</td>
+            <td>01/06/2026</td>
+            <td>02/06/2026</td>
+            <td><div class="df-badge scheduled">Scheduled</div><div class="df-req-count">Request 1 / 1</div></td>
+            <td><button class="df-btn"><svg class="ic" style="font-size:14px"><use href="#ic-eye"/></svg></button></td>
+          </tr>
+          <tr>
+            <td><span class="df-company">Saison Capital</span></td>
+            <td>GUACGIN TEST 23</td>
+            <td>Unique request</td>
+            <td>24/04/2026</td>
+            <td>23/04/2026</td>
+            <td><div class="df-badge validated">Validated</div><div class="df-req-count">Request 1 / 1</div></td>
+            <td><button class="df-btn"><svg class="ic" style="font-size:14px"><use href="#ic-eye"/></svg></button></td>
+          </tr>
+          <tr>
+            <td><span class="df-company">Saison Capital</span></td>
+            <td>TestProdGera</td>
+            <td>Unique request</td>
+            <td>28/04/2026</td>
+            <td>28/04/2026</td>
+            <td><div class="df-badge overdue">Overdue</div><div class="df-req-count">Request 1 / 1</div></td>
+            <td><button class="df-btn"><svg class="ic" style="font-size:14px"><use href="#ic-eye"/></svg></button></td>
+          </tr>
+          <tr>
+            <td><span class="df-company">Saison Capital</span></td>
+            <td>TestProdGera2</td>
+            <td>Unique request</td>
+            <td>28/04/2026</td>
+            <td>28/04/2026</td>
+            <td><div class="df-badge validated">Validated</div><div class="df-req-count">Request 1 / 1</div></td>
+            <td><button class="df-btn"><svg class="ic" style="font-size:14px"><use href="#ic-eye"/></svg></button></td>
+          </tr>
+          <tr>
+            <td><span class="df-company">Saison Capital</span></td>
+            <td>TestProdLEN</td>
+            <td>Unique request</td>
+            <td>15/05/2026</td>
+            <td>15/05/2026</td>
+            <td><div class="df-badge pending">Pending review</div><div class="df-req-count">Request 1 / 1</div></td>
+            <td><button class="df-btn"><svg class="ic" style="font-size:14px"><use href="#ic-eye"/></svg></button></td>
+          </tr>
+          <tr>
+            <td><span class="df-company">Saison Capital</span></td>
+            <td>Test2ProdLEN</td>
+            <td>Unique request</td>
+            <td>16/05/2026</td>
+            <td>15/05/2026</td>
+            <td><div class="df-badge pending">Pending review</div><div class="df-req-count">Request 1 / 1</div></td>
+            <td><button class="df-btn"><svg class="ic" style="font-size:14px"><use href="#ic-eye"/></svg></button></td>
+          </tr>
+          <tr>
+            <td><span class="df-company">Saison Capital</span></td>
+            <td>Test3prod</td>
+            <td>Unique request</td>
+            <td>16/05/2026</td>
+            <td>27/05/2026</td>
+            <td><div class="df-badge check">Check Required</div><div class="df-req-count">Request 1 / 1</div></td>
+            <td><button class="df-btn"><svg class="ic" style="font-size:14px"><use href="#ic-eye"/></svg></button></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="df-pagination">
+        <button class="df-page-btn disabled">«</button>
+        <button class="df-page-btn disabled">‹</button>
+        <button class="df-page-btn active">1</button>
+        <button class="df-page-btn">2</button>
+        <button class="df-page-btn">3</button>
+        <button class="df-page-btn">›</button>
+        <button class="df-page-btn">»</button>
+      </div>
+    </div>
+  </div><!-- /df-originator-content -->
+
 </div><!-- /view-dataflow -->
+
+<!-- ── DEMO BAR (Data Flow) ──────────────────────────────────────── -->
+<div id="df-demo-bar" class="df-demo-bar">
+  <span class="df-demo-label">
+    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 256 256" fill="#8B1A4A"><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Z"/></svg>
+    Demo:
+  </span>
+  <button class="df-demo-tab active" id="dftab-lender" onclick="switchDFView('lender')">Lender</button>
+  <button class="df-demo-tab" id="dftab-originator" onclick="switchDFView('originator')">Originator</button>
+  <button class="df-demo-tab" id="dftab-back-lender" onclick="switchDFView('lender')" style="display:none;margin-left:4px;opacity:.7">← Back to Lender</button>
+  <span class="df-demo-version">v2 · aligned with product</span>
+</div>
 
 <!-- ── MODAL: NEW DATA REQUEST ─────────────────────────────────── -->
 <div class="df-overlay" id="dfModal">
@@ -1895,8 +2025,8 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
 
       <div class="form-group">
         <label class="form-label">Company <span class="req">*</span></label>
-        <select class="form-select" id="dup-src-company" onchange="onDupCompanyChange(this.value)">
-          <option value="">Select company…</option>
+        <select class="form-select is-empty" id="dup-src-company" onchange="this.classList.toggle('is-empty',!this.value);onDupCompanyChange(this.value)">
+          <option value="" disabled hidden>Select an option</option>
           <option>Kueski Pay</option><option>Konfío</option><option>R2</option>
           <option>Aplazo</option><option>Avante</option><option>Credijusto</option><option>Stori</option>
         </select>
@@ -1905,22 +2035,16 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
       <div class="form-row-2">
         <div class="form-group">
           <label class="form-label">Category <span class="req">*</span></label>
-          <select class="form-select" id="dup-src-category" onchange="onDupCategoryChange(this.value)" disabled>
-            <option value="">Select category…</option>
+          <select class="form-select is-empty" id="dup-src-category" onchange="this.classList.toggle('is-empty',!this.value);onDupCategoryChange(this.value)" disabled>
+            <option value="" disabled hidden>Select an option</option>
           </select>
         </div>
         <div class="form-group">
           <label class="form-label">Template <span class="req">*</span></label>
-          <select class="form-select" id="dup-src-template" onchange="onDupTemplateChange(this.value)" disabled>
-            <option value="">Select template…</option>
+          <select class="form-select is-empty" id="dup-src-template" onchange="this.classList.toggle('is-empty',!this.value);onDupTemplateChange(this.value)" disabled>
+            <option value="" disabled hidden>Select an option</option>
           </select>
         </div>
-      </div>
-
-      <!-- DP count callout (hidden until template selected) -->
-      <div class="callout-info" id="dup-dp-callout" style="display:none">
-        <span class="ci-icon">📋</span>
-        <span class="ci-text" id="dup-dp-callout-text">—</span>
       </div>
 
       <!-- ── COPY CONFIG ── -->
@@ -1936,8 +2060,8 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
 
       <div class="form-group">
         <label class="form-label">Assign copy to company <span class="req">*</span></label>
-        <select class="form-select" id="dup-dest-company" onchange="validateDuplicate()">
-          <option value="">Select target company…</option>
+        <select class="form-select is-empty" id="dup-dest-company" onchange="this.classList.toggle('is-empty',!this.value);validateDuplicate()">
+          <option value="" disabled hidden>Select an option</option>
           <option>Kueski Pay</option><option>Konfío</option><option>R2</option>
           <option>Aplazo</option><option>Avante</option><option>Credijusto</option>
           <option>Stori</option><option>Fincomún</option><option>Yotepresto</option>
@@ -1947,7 +2071,6 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
 
     </div>
     <div class="modal-footer">
-      <button class="btn-cancel-modal" onclick="closeModal('modal-duplicate')">Cancel</button>
       <button class="btn-modal-primary" id="btn-run-duplicate" onclick="executeDuplicate()" disabled>
         <svg class="ic" style="font-size:13px;margin-right:2px"><use href="#ic-copy"/></svg>
         Duplicate
@@ -2122,7 +2245,39 @@ function showView(name) {
   if (covEl) covEl.classList.toggle('active-view', name === 'covenants');
   if (dfEl)  dfEl.classList.toggle('active-view',  name === 'dataflow');
   if (name === 'covenants' && typeof _loadCovFrame === 'function') _loadCovFrame();
+  // Demo bar: show only for dataflow; reset to lender when leaving
+  const demoBar = document.getElementById('df-demo-bar');
+  if (demoBar) {
+    if (name === 'dataflow') { demoBar.classList.add('visible'); }
+    else { demoBar.classList.remove('visible'); switchDFView('lender'); }
+  }
   currentView = name;
+}
+
+function switchDFView(view) {
+  const lender = document.getElementById('df-lender-content');
+  const orig   = document.getElementById('df-originator-content');
+  const tabL   = document.getElementById('dftab-lender');
+  const tabO   = document.getElementById('dftab-originator');
+  if (!lender || !orig) return;
+  const isLender = view === 'lender';
+  lender.style.display = isLender ? '' : 'none';
+  orig.style.display   = isLender ? 'none' : '';
+  tabL.classList.toggle('active', isLender);
+  tabO.classList.toggle('active', !isLender);
+  const backBtn = document.getElementById('dftab-back-lender');
+  if (backBtn) backBtn.style.display = isLender ? 'none' : '';
+  // Update user pill
+  const avatar = document.querySelector('.user-avatar');
+  const uName  = document.querySelector('.user-name');
+  const uRole  = document.querySelector('.user-role');
+  if (avatar && uName && uRole) {
+    if (isLender) {
+      avatar.textContent = 'NC'; uName.textContent = 'Saison Capital'; uRole.textContent = 'Valter · PM';
+    } else {
+      avatar.textContent = 'KP'; uName.textContent = 'Kueski Pay'; uRole.textContent = 'Valter · Originador';
+    }
+  }
 }
 
 /* ══════════════════ LIST VIEW ═══════════════════ */
@@ -3111,7 +3266,6 @@ function openDuplicateModal(){
     if(el){el.value='';el.disabled=(id==='dup-src-category'||id==='dup-src-template');}
   });
   document.getElementById('dup-new-name').value='';
-  document.getElementById('dup-dp-callout').style.display='none';
   document.getElementById('err-dup-name').classList.remove('visible');
   document.getElementById('btn-run-duplicate').disabled=true;
   openModal('modal-duplicate');
@@ -3120,10 +3274,9 @@ function openDuplicateModal(){
 function onDupCompanyChange(company){
   const catSel=document.getElementById('dup-src-category');
   const tplSel=document.getElementById('dup-src-template');
-  catSel.innerHTML='<option value="">Select category…</option>';
-  tplSel.innerHTML='<option value="">Select template…</option>';
+  catSel.innerHTML='<option value="" disabled hidden>Select an option</option>';
+  tplSel.innerHTML='<option value="" disabled hidden>Select an option</option>';
   tplSel.disabled=true;
-  document.getElementById('dup-dp-callout').style.display='none';
   document.getElementById('dup-new-name').value='';
   if(!company){catSel.disabled=true;validateDuplicate();return;}
   // Find categories for this company
@@ -3144,8 +3297,7 @@ function onDupCompanyChange(company){
 function onDupCategoryChange(cat){
   const company=document.getElementById('dup-src-company').value;
   const tplSel=document.getElementById('dup-src-template');
-  tplSel.innerHTML='<option value="">Select template…</option>';
-  document.getElementById('dup-dp-callout').style.display='none';
+  tplSel.innerHTML='<option value="" disabled hidden>Select an option</option>';
   document.getElementById('dup-new-name').value='';
   if(!cat){tplSel.disabled=true;validateDuplicate();return;}
   const matches=templates.filter(t=>t.company===company&&t.type===cat);
@@ -3160,22 +3312,15 @@ function onDupCategoryChange(cat){
 }
 
 function onDupTemplateChange(tplId){
-  const callout=document.getElementById('dup-dp-callout');
-  const calloutText=document.getElementById('dup-dp-callout-text');
   const nameInput=document.getElementById('dup-new-name');
-  if(!tplId){callout.style.display='none';nameInput.value='';validateDuplicate();return;}
+  if(!tplId){nameInput.value='';validateDuplicate();return;}
   const t=templates.find(t=>String(t.id)===tplId);
   if(!t){validateDuplicate();return;}
-  // Count data points
-  const dpCount=getAllRows(t.id).length;
-  const secCount=getAllSections(t.id).length;
-  const m=TYPE_META[t.type];
-  calloutText.innerHTML=`<strong>${dpCount} data point${dpCount!==1?'s':''}</strong> across <strong>${secCount} section${secCount!==1?'s':''}</strong> will be copied from <strong>${t.name||t.company}</strong> (${m?m.label:t.type}).`;
-  callout.style.display='flex';
   // Pre-fill name
   nameInput.value='Copy of '+t.name;
   // Pre-fill dest company with same company
-  document.getElementById('dup-dest-company').value=t.company;
+  const destSel=document.getElementById('dup-dest-company');
+  destSel.value=t.company; destSel.classList.toggle('is-empty',!destSel.value);
   validateDuplicate();
 }
 
