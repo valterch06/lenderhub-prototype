@@ -1889,12 +1889,13 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
       <button class="modal-close" onclick="closeModal('modal-edit-dp')"><svg class="ic"><use href="#ic-close"/></svg></button>
     </div>
     <div class="modal-body">
-      <div class="form-group">
-        <label class="form-label">Name <span class="req">*</span></label>
-        <input class="form-input" id="edit-dp-name" maxlength="100" placeholder="Data point name…"
-          oninput="document.getElementById('btn-save-edit').disabled=!this.value.trim()">
-      </div>
-      <div class="form-row-2">
+      <div class="form-row-3" style="margin-bottom:10px">
+        <div class="form-group">
+          <label class="form-label">Name <span class="req">*</span></label>
+          <input class="form-input" id="edit-dp-name" maxlength="100"
+            placeholder="e.g. Total Assets, NPL Ratio…"
+            oninput="document.getElementById('btn-save-edit').disabled=!this.value.trim()">
+        </div>
         <div class="form-group">
           <label class="form-label">Section</label>
           <select class="form-select" id="edit-dp-section"></select>
@@ -1911,19 +1912,13 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label" style="display:flex;align-items:center;gap:5px">Description / AI extraction instruction
-          <span class="tooltip-wrap" style="line-height:1">
-            <svg class="ic" style="font-size:13px;color:var(--text-muted);cursor:default"><use href="#ic-info"/></svg>
-            <span class="tooltip-box multi">Describe the account definition + its location in the document (if it is found under another name or in a specific section) + the rules (how it is calculated, exceptions or omissions)</span>
-          </span>
-        </label>
+        <label class="form-label">Description</label>
         <textarea class="form-textarea" id="edit-dp-desc" maxlength="500"
-          placeholder="Describe where to find this value, how to calculate it, and what to exclude. AI will use this to extract the value from documents."></textarea>
+          placeholder="Define what this value represents, how it's calculated, and any exclusions or special rules. If applicable, note where it appears in reports or documents."></textarea>
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn-cancel-modal" onclick="closeModal('modal-edit-dp')">Cancel</button>
-      <button class="btn-modal-primary" id="btn-save-edit" onclick="saveEditDp()">Save changes</button>
+      <button class="btn-modal-primary" id="btn-save-edit" onclick="saveEditDp()">Save</button>
     </div>
   </div>
 </div>
@@ -1938,7 +1933,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
     <div class="confirm-text" id="delete-text">This action cannot be undone and will delete all associated data.</div>
     <div class="confirm-actions">
       <button class="btn-cancel-modal" onclick="closeModal('modal-delete')">Cancel</button>
-      <button class="btn-danger" onclick="runDelete()">Yes, delete</button>
+      <button class="btn-danger" onclick="runDelete()">Delete</button>
     </div>
   </div>
 </div>
@@ -1950,36 +1945,29 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
   <div class="modal" style="width:480px">
     <div class="modal-header">
       <div>
-        <div class="modal-title">Edit Custom Section</div>
-        <div class="modal-subtitle">Edit the name and details of your custom Section.</div>
+        <div class="modal-title">Edit Section</div>
+        <div class="modal-subtitle">Edit the name and details of this section.</div>
       </div>
       <button class="modal-close" onclick="closeModal('modal-edit-section')"><svg class="ic"><use href="#ic-close"/></svg></button>
     </div>
     <div class="modal-body">
-      <div class="callout-info" style="margin-bottom:18px">
-        <i class="ph ph-info ci-icon" style="font-size:15px;flex-shrink:0;margin-top:1px;color:#0369A1"></i>
-        <span>Changes to the section name and description apply to all data points in this section.</span>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Name <span class="req">*</span></label>
-        <input class="form-input" id="es-name" maxlength="60" placeholder="e.g. Balance Sheet, Covenants, Portfolio…"
-          oninput="validateEditSection()">
-      </div>
-      <div class="form-group" style="margin-bottom:0">
-        <label class="form-label" style="display:flex;align-items:center;gap:5px">
-          Section description
-          <span class="tooltip-wrap" style="line-height:1">
-            <svg class="ic" style="font-size:13px;color:var(--secondary-active);cursor:default"><use href="#ic-info"/></svg>
-            <span class="tooltip-box multi">Describe how to identify this section in source documents. Used by the AI extraction engine.</span>
-          </span>
-        </label>
-        <textarea class="form-textarea" id="es-desc" maxlength="500"
-          placeholder="e.g. Identify the 'Estado de Resultados' section. Extract values from the Income Statement…"
-          style="min-height:80px"></textarea>
+      <div style="background:#FDF2F8;border:1px solid #FCE7F3;border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:12px">
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label" style="color:var(--secondary-active)">Name <span class="req">*</span></label>
+          <input class="form-input" id="es-name" maxlength="60"
+            placeholder="e.g. Balance Sheet, Covenants, Portfolio…"
+            oninput="validateEditSection()">
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label class="form-label" style="color:var(--secondary-active)">Description</label>
+          <textarea class="form-textarea" id="es-desc" maxlength="500"
+            placeholder="Define what this section groups together. If applicable, note where it appears in the document — e.g., heading name, tab, or page range."
+            style="min-height:80px"></textarea>
+        </div>
       </div>
     </div>
     <div class="modal-footer" style="justify-content:flex-end">
-      <button class="btn-modal-primary" id="btn-save-section" onclick="saveEditSection()">Save Changes</button>
+      <button class="btn-modal-primary" id="btn-save-section" onclick="saveEditSection()">Save</button>
     </div>
   </div>
 </div>
@@ -1996,7 +1984,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
     <div class="modal-body" style="padding-top:0">
       <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0 4px">
         <span style="font-size:22px;flex-shrink:0;margin-top:1px">⚠️</span>
-        <span style="font-size:13px;color:var(--text-secondary);line-height:1.5">This action is irreversible and modifies the financial statement structure.</span>
+        <span style="font-size:13px;color:var(--text-secondary);line-height:1.5">This action cannot be undone. It will modify the template structure and permanently delete all data associated with this section.</span>
       </div>
     </div>
     <div class="modal-footer" style="justify-content:flex-end;gap:8px">
@@ -2708,8 +2696,8 @@ function saveEditDp() {
 function openDeleteDp(id, name) {
   deleteTargetId = 'dp-' + id;
   document.getElementById('delete-icon').textContent = '🗑️';
-  document.getElementById('delete-title').textContent = 'Delete data point';
-  document.getElementById('delete-text').textContent = `You are about to delete "${name}". This action cannot be undone and will delete all associated data.`;
+  document.getElementById('delete-title').textContent = `Delete ${name}?`;
+  document.getElementById('delete-text').textContent = `This action cannot be undone. It will modify the template structure and permanently delete all data associated with this data point.`;
   openModal('modal-delete');
 }
 
