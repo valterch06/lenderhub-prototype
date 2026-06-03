@@ -1292,9 +1292,9 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 256 256" fill="#8B1A4A"><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Z"/></svg>
     Demo:
   </span>
-  <button class="df-demo-tab active" id="dftab-lender" onclick="switchDFView('lender')">Lender</button>
-  <button class="df-demo-tab" id="dftab-originator" onclick="switchDFView('originator')">Originator</button>
-  <button class="df-demo-tab" id="dftab-back-lender" onclick="switchDFView('lender')" style="display:none;margin-left:4px;opacity:.7">← Back to Lender</button>
+  <button class="df-demo-tab active" id="dftab-lender" onclick="var f=document.getElementById('df-builder-frame');if(f&&f.contentWindow&&f.contentWindow.switchDFView){f.contentWindow.switchDFView('lender');}this.classList.add('active');document.getElementById('dftab-originator').classList.remove('active');document.getElementById('dftab-back-lender').style.display='none';">Lender</button>
+  <button class="df-demo-tab" id="dftab-originator" onclick="var f=document.getElementById('df-builder-frame');if(f&&f.contentWindow&&f.contentWindow.switchDFView){f.contentWindow.switchDFView('originator');}this.classList.add('active');document.getElementById('dftab-lender').classList.remove('active');document.getElementById('dftab-back-lender').style.display='';">Originator</button>
+  <button class="df-demo-tab" id="dftab-back-lender" onclick="var f=document.getElementById('df-builder-frame');if(f&&f.contentWindow&&f.contentWindow.switchDFView){f.contentWindow.switchDFView('lender');}document.getElementById('dftab-lender').classList.add('active');document.getElementById('dftab-originator').classList.remove('active');this.style.display='none';" style="display:none;margin-left:4px;opacity:.7">← Back to Lender</button>
   <span class="df-demo-version">v2 · aligned with product</span>
 </div>
 
@@ -1497,7 +1497,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
     _dfLoaded = true;
     var bytes = new Uint8Array(atob(_DF_B64).split('').map(function(c){return c.charCodeAt(0);}));
     var html = new TextDecoder('utf-8').decode(bytes);
-    var hideCSS = '<style>.sidebar{display:none!important}.topnav{display:none!important}.main{width:100%!important;height:100vh!important}.df-demo-bar{left:0!important}</style>';
+    var hideCSS = '<style>.sidebar{display:none!important}.topnav{display:none!important}.main{width:100%!important;height:100vh!important}.df-demo-bar{display:none!important}</style>';
     html = html.replace('</head>', hideCSS + '</head>');
     var blob = new Blob([html], {type:'text/html; charset=utf-8'});
     document.getElementById('df-builder-frame').src = URL.createObjectURL(blob);
