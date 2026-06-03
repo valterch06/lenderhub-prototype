@@ -1497,7 +1497,7 @@ tr.drag-over td{box-shadow:inset 0 -2px 0 var(--secondary)}
     _dfLoaded = true;
     var bytes = new Uint8Array(atob(_DF_B64).split('').map(function(c){return c.charCodeAt(0);}));
     var html = new TextDecoder('utf-8').decode(bytes);
-    var hideCSS = '<style>.sidebar{display:none!important}.main{width:100%!important}.df-demo-bar{left:0!important}</style>';
+    var hideCSS = '<style>.sidebar{display:none!important}.topnav{display:none!important}.main{width:100%!important;height:100vh!important}.df-demo-bar{left:0!important}</style>';
     html = html.replace('</head>', hideCSS + '</head>');
     var blob = new Blob([html], {type:'text/html; charset=utf-8'});
     document.getElementById('df-builder-frame').src = URL.createObjectURL(blob);
